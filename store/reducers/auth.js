@@ -1,16 +1,29 @@
 import { AUTHENTICATE, LOGOUT } from '../actions/auth';
 
 const initialState = {
-    token: null,
-    userId: null
+    id: '',
+    token: '',
+    userId: '',
+    email: '',
+    name: '',
+    dateJoined: '',
+    imageUrl: ''
+
 };
 
 export default (state = initialState, action) => {
     switch (action.type) {
         case AUTHENTICATE:
+            // console.log(imageUrl)
             return {
+                ...state,
+                id: action.id,
                 token: action.token,
-                userId: action.userId
+                userId: action.userId,
+                email: action.email,
+                name: action.name,
+                dateJoined: action.dateJoined,
+                imageUrl: action.imageUrl
             };
             // case SIGNUP:
             //     return {

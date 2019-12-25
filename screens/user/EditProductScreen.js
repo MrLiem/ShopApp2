@@ -16,6 +16,8 @@ import { useSelector, useDispatch } from "react-redux";
 import * as productsActions from "../../store/actions/products";
 import Input from "../../components/UI/Input";
 import Colors from "../../constants/Colors";
+import ImagePicker from '../../components/UI/ImagePicker'
+
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 const formReducer = (state, action) => {
@@ -54,13 +56,13 @@ const EditProductScreen = props => {
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
       title: editedProduct ? editedProduct.title : "",
-      imageUrl: editedProduct ? editedProduct.imageUrl : "",
+      // imageUrl: editedProduct ? editedProduct.imageUrl : "",
       description: editedProduct ? editedProduct.description : "",
       price: ""
     },
     inputValidities: {
       title: editedProduct ? true : false,
-      imageUrl: editedProduct ? true : false,
+      // imageUrl: editedProduct ? true : false,
       description: editedProduct ? true : false,
       price: editedProduct ? true : false
     },
@@ -78,6 +80,13 @@ const EditProductScreen = props => {
   //   editedProduct ? editedProduct.description : ""
   // );
 
+  const [selectedImage,setSelectedImage]=useState(editedProduct ? editedProduct.imageUrl : "");
+  const imageTakenHandler = imagePath => {
+    setSelectedImage(imagePath);
+
+  };
+  
+
   useEffect(()=>{
     if(error){
       Alert.alert('An error occurred',error,[{text:'Okay'}]);
@@ -92,7 +101,6 @@ const EditProductScreen = props => {
       ]);
       return;
     }
-
     setError(null);
     setIsLoading(true);
     try {
@@ -102,7 +110,8 @@ const EditProductScreen = props => {
             prodId,
             formState.inputValues.title,
             formState.inputValues.description,
-            formState.inputValues.imageUrl
+            // formState.inputValues.imageUrl
+            selectedImage
           )
         );
       } else {
@@ -110,7 +119,8 @@ const EditProductScreen = props => {
           productsActions.createProduct(
             formState.inputValues.title,
             formState.inputValues.description,
-            formState.inputValues.imageUrl,
+            // formState.inputValues.imageUrl,
+            selectedImage,
             +formState.inputValues.price
           )
         );
@@ -119,10 +129,8 @@ const EditProductScreen = props => {
     } catch (err) {
       setError(err.message);
     }
-
     setIsLoading(false);
-   
-  }, [dispatch, prodId, formState]);
+  }, [dispatch, prodId, formState,selectedImage]);
 
   // const submitHandler = useCallback(() => {
   //   console.log("ds");
@@ -142,6 +150,7 @@ const EditProductScreen = props => {
     },
     [dispatchFormState]
   );
+
 
   if (isLoading) {
     return (
@@ -172,7 +181,7 @@ const EditProductScreen = props => {
             initiallyValid={!!editedProduct}
             required
           />
-          <Input
+          {/* <Input
             id="imageUrl"
             label="Image Url"
             errorText="Please enter a valid image Url!"
@@ -182,7 +191,11 @@ const EditProductScreen = props => {
             initialValue={editedProduct ? editedProduct.imageUrl : ""}
             initiallyValid={!!editedProduct}
             required
-          />
+          /> */}
+         {editedProduct ?  <ImagePicker onImageTaken={imageTakenHandler} imageUrl={selectedImage}/> :(
+              <ImagePicker onImageTaken={imageTakenHandler} />
+         )}
+     
           {editedProduct ? null : (
             <Input
               id="price"

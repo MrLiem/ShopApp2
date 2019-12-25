@@ -16,6 +16,7 @@ import UserProductsScreen from "../screens/user/UserProductsScreen";
 import EditProductScreen from "../screens/user/EditProductScreen";
 import AuthScreen from "../screens/user/AuthScreen";
 import StartupScreen from "../screens/StartupScreen";
+import ProfileScreen from '../screens/user/ProfileScreen'
 import Colors from "../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import * as authActions from '../store/actions/auth'
@@ -90,11 +91,30 @@ const AdminNavigator = createStackNavigator(
   }
 );
 
+const ProfileNavigator = createStackNavigator(
+  {
+    Profile: ProfileScreen
+  },
+  {
+    navigationOptions: {
+      drawerIcon: drawerConfig => (
+        <Ionicons
+          name={Platform.OS === "android" ? "md-images" : "ios-images"}
+          size={23}
+          color={drawerConfig.tintColor}
+        />
+      )
+    },
+    defaultNavigationOptions: defaultNavOptions
+  }
+);
+
 const ShopNavigator = createDrawerNavigator(
   {
     Products: ProductsNavigator,
     Orders: OrdersNavigator,
-    Admin: AdminNavigator
+    Admin: AdminNavigator,
+    Profile: ProfileNavigator
   },
   {
     contentOptions: {

@@ -17,14 +17,15 @@ const ProductItem = props => {
   if (Platform.OS === "android" && Platform.Version >= 21) {
     TouchableCmp = TouchableNativeFeedback;
   }
-
+  
+  console.log(props.image)
   return (
     <Card style={styles.product}>
       <View style={styles.touchable}>
         <TouchableCmp onPress={props.onSelect} useForeground>
           <View>
             <View style={styles.imageContainer}>
-              <Image style={styles.image} source={{ uri: props.image }}></Image>
+              <Image style={styles.image} source={{ uri:props.image}}></Image>
             </View>
             <View style={styles.details}>
               <Text style={styles.title}> {props.title}</Text>
@@ -80,7 +81,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     height: "23%",
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   }
 });
 

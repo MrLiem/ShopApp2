@@ -1,5 +1,5 @@
-import React from "react";
-import { FlatList, Button, Platform, Alert,View,Text } from "react-native";
+import React,{useEffect,useState} from "react";
+import { FlatList, Button, Platform, Alert,View,Text,ActivityIndicator,StyleSheet } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../../components/UI/HeaderButton";
@@ -9,7 +9,15 @@ import * as productActions from "../../store/actions/products";
 
 const UserProductsScreen = props => {
   const userProducts = useSelector(state => state.products.userProducts);
+  const [isLoading,setIsLoading]=useState(false);
   const dispatch = useDispatch();
+
+  useEffect(()=>{
+    setIsLoading(true);
+    dispatch(productActions.fetchProducts()).then(()=>{
+      setIsLoading(false);
+    })
+  },[setIsLoading])
 
   const editProductHandler = id => {
     props.navigation.navigate("EditProduct", { productId: id });
@@ -28,6 +36,15 @@ const UserProductsScreen = props => {
     ]);
   };
 
+  
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    );
+  }
+  
   if (userProducts.length === 0) {
     return (
       <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
@@ -96,4 +113,13 @@ UserProductsScreen.navigationOptions = navData => {
     )
   };
 };
+
+const styles = StyleSheet.create({
+  centered:{
+    flex:1,
+    justifyContent:'center',
+    alignItems:'center'
+  }
+});
+
 export default UserProductsScreen;

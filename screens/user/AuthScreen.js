@@ -70,20 +70,19 @@ const AuthScreen = props => {
     if (isSignup) {
       action = authActions.signup(
         formState.inputValues.email,
-        formState.inputValues.password
+        formState.inputValues.password,
       );
     } else {
       action = authActions.login(
         formState.inputValues.email,
-        formState.inputValues.password
+        formState.inputValues.password, 
       );
     }
     setError(null);
     setIsLoading(true);
     try {
       await dispatch(action);
-      props.navigation.navigate('Shop');
-
+      props.navigation.navigate('Shop')
     } catch (err) {
       setError(err.message);
       setIsLoading(false);
